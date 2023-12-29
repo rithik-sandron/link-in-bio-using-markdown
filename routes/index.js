@@ -21,6 +21,14 @@ router.get('/', async function (req, res) {
   res.json('zro');
 });
 
+router.get('/u', async function (req, res) {
+  const callback = async function (db) {
+    return await db.collection("users").find().toArray();
+  }
+  const data = await run(callback);
+  res.send(data);
+});
+
 router.post('/u/create', upload.single('file'), async function (req, res) {
   const callback = async function (db) {
     const users = db.collection("users");
