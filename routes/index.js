@@ -3,6 +3,7 @@ const { run } = require('../db/mongo');
 var router = express.Router();
 const multer = require('multer')
 var path = require('path');
+var md = require('../hooks/converter')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -32,11 +33,14 @@ router.get('/u', async function (req, res) {
 router.post('/u/create', upload.single('file'), async function (req, res) {
   const callback = async function (db) {
     const users = db.collection("users");
+    const md_content = await md.convert(req.body.content);
+    console.log(md_content)
     const user = {
       username: req.body.username,
       bgcolor: req.body.bgcolor,
       color: req.body.color,
       content: req.body.content,
+      markdown: md_content,
       file_path: req.body.filename
     }
 
