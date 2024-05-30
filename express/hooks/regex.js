@@ -38,7 +38,7 @@ const italics = /\*(.+?)\*(?!\*)/g;
 const strike = /\~\~(.+?)\~\~(?!\*)/g;
 const boldAndItalic = /\*\*\*(.+?)\*\*\*(?!\*)/g;
 const un = /\*\*\*\*(.+?)\*\*\*\*(?!\*)/g;
-const link = /\[\[(.*?)\]\]\(((https:|http:)\/\/.*?)\)/g;
+const link = /\[(.*?)\]\(((https:|http:)\/\/.*?)\)\((.*?)\)\((.*?)\)/g;
 
 // for sanitization
 const ltr = /</gi;

@@ -1,5 +1,4 @@
-var reg = require("./regex");
-const {
+import {
   un,
   Hline,
   Olist,
@@ -16,6 +15,7 @@ const {
   h3,
   italics,
   link,
+  // image,
   ltr,
   multiLineCode,
   quote,
@@ -26,11 +26,12 @@ const {
   tagNotify,
   codeHighlight,
   tableDivider,
-} = reg;
+  // image_loc,
+} from "./regex";
 
 const listTypeArray = ["disc", "circle", "square"];
 
-function boldAndItalics(line, regReplaced) {
+function boldAndItalics(line, regReplaced, imgs) {
   regReplaced = line.replaceAll(un, `**$1**`);
   regReplaced = regReplaced.replaceAll(
     boldAndItalic,
@@ -46,8 +47,16 @@ function boldAndItalics(line, regReplaced) {
   regReplaced = regReplaced.replaceAll(tagHash, `<span>&#35;$1</span>`);
   regReplaced = regReplaced.replaceAll(tag, `<mark>$1</mark>`);
   if (line.match(link)) {
+    console.log("hello")
     regReplaced = regReplaced.replace(link, `<a class='biolink' style='background-color:$4;color:$5;' href='$2'>$1</a>`);
   }
+  // if (line.match(image)) {
+  //   const loc = regReplaced.match(image_loc)[0].slice(1, -1);
+  //   regReplaced = regReplaced.replace(
+  //     image,
+  //     `<img src='${imgs[loc]}' alt='$2' />`
+  //   );
+  // }
   return regReplaced;
 }
 
@@ -56,18 +65,20 @@ function sanitize(line) {
   return line;
 }
 
-async function convert(plain) {
+export async function convert(plain, imgs) {
   let data = plain.split("\n");
-  let len = data.length;
 
+  let len = data.length;
   let dataHtml = "";
   if (data) {
     let i = 0;
     while (i < len) {
       let line = data[i];
       if (empty.test(line.trim())) {
+
         let regReplaced = "";
         line = sanitize(line);
+
         switch (true) {
           case multiLineCode.test(line):
             dataHtml += `<code><pre>`;
@@ -93,7 +104,7 @@ async function convert(plain) {
           case h1.test(line):
             line = boldAndItalics(line, "");
             regReplaced = line.replace(h1, "");
-            dataHtml += `<a style="color: inherit;" href='#${i}'><h1 id='${i}' class='table-content-h1'>${regReplaced}</h1></a>`;
+            dataHtml += `<h1 id='${i}' class='table-content-h1'>${regReplaced}</h1>`;
             i++;
             break;
 
@@ -207,12 +218,18 @@ async function convert(plain) {
               else listType = listTypeArray[tabspace];
               regReplaced = lineJ.replace(Ulist, "");
               dataHtml += `<li style="margin-left: ${
-                1.2 + padding
+                1.5 + padding
               }em; list-style-type: ${listType}">${regReplaced}</li>`;
               i++;
             }
             dataHtml += `</ul>`;
             break;
+
+          // case image.test(line):
+          //   line = boldAndItalics(line, "", imgs);
+          //   dataHtml += line;
+          //   i++;
+          //   break;
 
           default:
             line = boldAndItalics(line, "");
@@ -228,5 +245,3 @@ async function convert(plain) {
     return dataHtml;
   }
 }
-
-module.exports = { convert };

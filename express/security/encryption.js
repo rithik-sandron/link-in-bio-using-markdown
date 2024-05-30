@@ -9,7 +9,6 @@ const hash = createHmac('sha256', secret)
 
 const s = createDiffieHellman(1128);
 const private_s = s.generateKeys();
-console.log(s)
 const c = createDiffieHellman(s.getPrime(), s.getGenerator());
 const private_c = c.generateKeys();
 
