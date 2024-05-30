@@ -1,21 +1,10 @@
-## Start Express
-DEBUG=express:* npm start
+# A link in bio tool that utilizes markdown.
+- Create unique cards which represents you.
+- Select range of fun colours for each links!
+- Drag and drop images
 
-## Redis DB
-brew install redis
-redis-server
-
-## Mongo DB
-brew tap mongodb/brew
-brew install mongodb-community@7.0
-
-### start stop as services
-brew services start mongodb-community@7.0
-brew services stop mongodb-community@7.0
-
-### start working
-mongosh
-disableTelemetry()
-
-### commands
-Mongo.md has all basic commands
+## Markdown
+- Usual markdown stuff
+- Link with colors `[Link your youtube channel or a video](https://youtube.com)(#ff000095)(white)`
+  
+<img width="708" alt="Screenshot 2024-05-30 at 7 26 16 PM" src="https://github.com/rithik-sandron/link-in-bio-using-markdown/assets/81804302/f756ec33-ea34-4b7d-9715-4900e773fede">
